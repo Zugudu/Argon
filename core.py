@@ -25,7 +25,7 @@ def start():
 
 if __name__ == '__main__':
 	try:
-		p = multiprocessing.Process(target=os.system, args=('py tg_bot.py', ))
+		p = multiprocessing.Process(target=os.system, args=('python3 tg_bot.py', ))
 		p1 = multiprocessing.Process(target=start)
 		p.start()
 		p1.start()
