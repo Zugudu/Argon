@@ -20,17 +20,17 @@ def webhook():
 	bot.send_message(conf.admin, 'Оновлено репозиторій %s\nБажаєте оновити якісь репозиторії?' % request.json['repository']['full_name'], reply_markup=getMark())
 	return ('OK', 200)
 
-
-def runTg():
-	os.system('python3 tg_bot.py')
-
+def start():
+	app.run(os.getenv('HOST'), os.getenv('PORT') or 7767)
 
 if __name__ == '__main__':
 	try:
-		p = multiprocessing.Process(target=runTg)
+		p = multiprocessing.Process(target=os.system, args=('py tg_bot.py', ))
+		p1 = multiprocessing.Process(target=start)
 		p.start()
+		p1.start()
 		p.join()
-		app.run(os.getenv('HOST'), os.getenv('PORT') or 7767)
+		p1.join()
 	except KeyboardInterrupt:
 		pass
 	print('Stop all')
