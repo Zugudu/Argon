@@ -1,4 +1,4 @@
-import telebot, os, conf, flask
+import telebot, os, conf, flask, multiprocessing
 from dotenv import load_dotenv
 from telebot.apihelper import send_message
 load_dotenv()
@@ -32,8 +32,22 @@ def show(msg):
 		mark.add(telebot.types.InlineKeyboardButton(el, callback_data=el))
 	bot.send_message(conf.admin, 'До системи підключені наступні репозиторії', reply_markup=mark)
 
+def start_webhook():
+	app.run(os.getenv('HOST'), os.getenv('PORT') or 7767)
 
-app.run(os.getenv('HOST'), os.getenv('PORT') or 7767)
-print('Start tg')
-bot.polling()
-print('Stop all')
+def start_tg():
+	bot.polling()
+
+if __name__ == '__main__':
+	p1 = multiprocessing.Process(target=start_webhook)
+	p1.start()
+
+	print('Start tg')
+	p2 = multiprocessing.Process(target=start_tg)
+	p2.start()
+	try:
+		p1.join()
+		p2.join()
+	except KeyboardInterrupt:
+		pass
+	print('Stop all')
