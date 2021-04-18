@@ -1,10 +1,15 @@
-from logging import DEBUG
-import telebot, os, conf
+import telebot, os, conf, flask
 from dotenv import load_dotenv
 from telebot.apihelper import send_message
 load_dotenv()
 
 bot = telebot.TeleBot(os.getenv('TOKEN'), parse_mode=None)
+app = flask.Flask(__name__)
+
+
+@app.route('/%s' % os.getenv('WEBHOOK_TOKEN'))
+def webhook(req):
+	print(req.json)
 
 
 @bot.callback_query_handler(func=lambda m: True)
@@ -28,6 +33,7 @@ def show(msg):
 	bot.send_message(conf.admin, 'До системи підключені наступні репозиторії', reply_markup=mark)
 
 
-print('Start')
+print('Start tg')
 bot.polling()
-print('Stop')
+app.run(os.getenv('HOST'), os.getenv('PORT') or 7767)
+print('Stop all')
