@@ -7,7 +7,7 @@ bot = telebot.TeleBot(os.getenv('TOKEN'), parse_mode=None)
 app = flask.Flask(__name__)
 
 
-@app.route('/%s' % os.getenv('WEBHOOK_TOKEN'))
+@app.route('/%s' % os.getenv('WEBHOOK_TOKEN'), methods=['POST'])
 def webhook(req):
 	print(req.json)
 
@@ -32,11 +32,13 @@ def show(msg):
 		mark.add(telebot.types.InlineKeyboardButton(el, callback_data=el))
 	bot.send_message(conf.admin, 'До системи підключені наступні репозиторії', reply_markup=mark)
 
+
 def start_webhook():
 	app.run(os.getenv('HOST'), os.getenv('PORT') or 7767)
 
 def start_tg():
 	bot.polling()
+
 
 if __name__ == '__main__':
 	p1 = multiprocessing.Process(target=start_webhook)
