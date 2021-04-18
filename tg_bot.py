@@ -26,3 +26,5 @@ def purpose(msg):
 @bot.message_handler(commands=['show'])
 def show(msg):
 	bot.send_message(conf.admin, 'До системи підключені наступні репозиторії', reply_markup=getMark())
+
+bot.polling()
