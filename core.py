@@ -1,4 +1,5 @@
 import telebot, os, conf, flask, multiprocessing
+from flask import request
 from dotenv import load_dotenv
 from telebot.apihelper import send_message
 load_dotenv()
@@ -8,8 +9,8 @@ app = flask.Flask(__name__)
 
 
 @app.route('/%s' % os.getenv('WEBHOOK_TOKEN'), methods=['POST'])
-def webhook(req):
-	print(req.json)
+def webhook():
+	print(request.json)
 
 
 @bot.callback_query_handler(func=lambda m: True)
