@@ -17,8 +17,8 @@ def getMark():
 
 @app.route('/%s' % os.getenv('WEBHOOK_TOKEN'), methods=['POST'])
 def webhook():
-	print(request.json.repository.full_name)
-	bot.send_message(conf.admin, 'Оновлено репозиторій %s\nБажаєте оновити якісь репозиторії?' % request.json.repository.full_name, reply_markup=getMark())
+	print(request.json['repository']['full_name'])
+	bot.send_message(conf.admin, 'Оновлено репозиторій %s\nБажаєте оновити якісь репозиторії?' % request.json['repository']['full_name'], reply_markup=getMark())
 	return ('OK', 200)
 
 
