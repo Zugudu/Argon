@@ -8,9 +8,17 @@ bot = telebot.TeleBot(os.getenv('TOKEN'), parse_mode=None)
 app = flask.Flask(__name__)
 
 
+def getMark():
+	mark = telebot.types.InlineKeyboardMarkup()
+	for el in conf.repos:
+		mark.add(telebot.types.InlineKeyboardButton(el, callback_data=el))
+	return mark
+
+
 @app.route('/%s' % os.getenv('WEBHOOK_TOKEN'), methods=['POST'])
 def webhook():
-	print(request.json)
+	print(request.json.repository.full_name)
+	bot.send_message(conf.admin, 'Оновлено репозиторій %s\nБажаєте оновити якісь репозиторії?' % request.json.repository.full_name, reply_markup=getMark())
 	return ('OK', 200)
 
 
@@ -29,10 +37,7 @@ def purpose(msg):
 
 @bot.message_handler(commands=['show'])
 def show(msg):
-	mark = telebot.types.InlineKeyboardMarkup()
-	for el in conf.repos:
-		mark.add(telebot.types.InlineKeyboardButton(el, callback_data=el))
-	bot.send_message(conf.admin, 'До системи підключені наступні репозиторії', reply_markup=mark)
+	bot.send_message(conf.admin, 'До системи підключені наступні репозиторії', reply_markup=getMark())
 
 
 def start_webhook():
