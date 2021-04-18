@@ -11,6 +11,7 @@ app = flask.Flask(__name__)
 @app.route('/%s' % os.getenv('WEBHOOK_TOKEN'), methods=['POST'])
 def webhook():
 	print(request.json)
+	return 200
 
 
 @bot.callback_query_handler(func=lambda m: True)
