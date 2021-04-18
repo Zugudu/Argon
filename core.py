@@ -33,7 +33,7 @@ def show(msg):
 	bot.send_message(conf.admin, 'До системи підключені наступні репозиторії', reply_markup=mark)
 
 
+app.run(os.getenv('HOST'), os.getenv('PORT') or 7767)
 print('Start tg')
 bot.polling()
-app.run(os.getenv('HOST'), os.getenv('PORT') or 7767)
 print('Stop all')
